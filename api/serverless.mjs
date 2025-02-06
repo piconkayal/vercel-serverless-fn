@@ -6,7 +6,7 @@ const app = Fastify({
 });
 
 // Register your plugins
-await app.register(import("../src/app.js"));
+await app.register(import("../src/app.mjs"));
 
 // Wait for ready
 // await app.ready();
