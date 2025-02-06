@@ -1,21 +1,37 @@
-import "dotenv/config";
 import Fastify from "fastify";
 
-console.log(1);
-
+// Create fastify instance outside the handler
 const app = Fastify({
   logger: true,
 });
 
-console.log(2);
+// Register your plugins
+await app.register(import("../src/app.js"));
 
-app.register(import("../src/app.js"));
+// Wait for ready
+await app.ready();
 
-console.log(3);
-
-export default async (req, res) => {
-  console.log(4);
+// Export the serverless function
+export default async function handler(req, res) {
   await app.ready();
-  console.log(5);
-  app.server.emit("request", req, res);
-};
+  
+  // Convert the incoming message to a Node.js style request
+  const nodeReq = {
+    method: req.method,
+    url: req.url,
+    headers: req.headers,
+    body: req.body,
+    raw: req
+  };
+
+  // Create a Node.js style response object
+  const nodeRes = res;
+
+  return new Promise((resolve, reject) => {
+    app.server.emit('request', nodeReq, nodeRes);
+    
+    // Handle response completion
+    nodeRes.on('finish', resolve);
+    nodeRes.on('error', reject);
+  });
+}
