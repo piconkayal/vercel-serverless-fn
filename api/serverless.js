@@ -1,19 +1,21 @@
-// Read the .env file.
-import * as dotenv from "dotenv";
-dotenv.config();
-
-// Require the framework
+import "dotenv/config";
 import Fastify from "fastify";
 
-// Instantiate Fastify with some config
+console.log(1);
+
 const app = Fastify({
   logger: true,
 });
 
-// Register your application as a normal plugin.
+console.log(2);
+
 app.register(import("../src/app.js"));
 
+console.log(3);
+
 export default async (req, res) => {
-    await app.ready();
-    app.server.emit('request', req, res);
-}
+  console.log(4);
+  await app.ready();
+  console.log(5);
+  app.server.emit("request", req, res);
+};
