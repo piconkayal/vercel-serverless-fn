@@ -4,7 +4,7 @@
     "keywords": [],
     "author": "Picon Kayal",
     "license": "MIT",
-    "type": "module",
+    "type": "commonjs",
     "description": "",
     "dependencies": {
       "dotenv": "^16.4.7",
