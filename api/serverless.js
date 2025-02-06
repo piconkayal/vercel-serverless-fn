@@ -6,7 +6,7 @@ const app = Fastify({
 });
 
 // Register your plugins
-await app.register(import("../src/index.js"));
+app.register(import("../src/index.js"));
 
 // Export the serverless function
 module.exports = async function handler(req, res) {
